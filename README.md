@@ -6,24 +6,6 @@
 [![Frontend](https://img.shields.io/badge/UI-Vanilla%20JS%20%7C%20CSS3%20%7C%20HTML5-purple.svg)](/)
 
 > A complete, fully functional, presentation-ready Java Object-Oriented Programming (OOP) web application. Designed for college-level second-year OOP evaluations, featuring a modern dark-themed SaaS dashboard and clean, explainable internal Java architecture.
-
----
-
-## 📌 Table of Contents
-1. [Project Overview](#-project-run.batoverview)
-2. [Problem Statement & Objectives](#-problem-statement--objectives)
-3. [Key Features](#-key-features)
-4. [Technology Stack](#-technology-stack)
-5. [OOP Concepts & Architecture](#-oop-concepts--architecture)
-6. [Parking Slot Allocation Rules](#-parking-slot-allocation-rules)
-7. [Tariff & Billing Formula](#-tariff--billing-formula)
-8. [Data Persistence & Storage](#-data-persistence--storage)
-9. [REST API Documentation](#-rest-api-documentation)
-10. [How to Compile & Run](#-how-to-compile--run)
-11. [Project Structure](#-project-structure)
-12. [Screenshots](#-screenshots)
-13. [Academic Documentation](#-academic-documentation)
-
 ---
 
 ## 🚗 Project Overview
@@ -205,7 +187,7 @@ ParkSmart/
 ├── compile.bat                           # Standalone compilation script
 ├── README.md                             # Project overview and instructions
 ├── .gitignore                            # Git ignore rules
-│
+├──  Dockerfile                           # Docker deployment configuration.
 ├── data/                                 # Persistent JSON files (auto-generated)
 │   ├── slots.json
 │   ├── vehicles.json
@@ -213,8 +195,6 @@ ParkSmart/
 │
 ├── docs/                                 # Academic project documentation
 │   ├── OOP_CONCEPTS.md                   # In-depth OOP analysis with code examples
-│   ├── PROJECT_REPORT.md                 # Complete formal project report
-│   └── VIVA_QUESTIONS.md                 # 28 Viva questions & answers
 │
 ├── src/
 │   └── main/
@@ -253,22 +233,6 @@ ParkSmart/
     └── parksmart-1.0.0.jar                       # Standalone executable JAR
 ```
 
----
-
-## 📸 Screenshots
-
-| Section | Description |
-|---|---|
-| **Dashboard** | Real-time statistics, occupancy progress, and recent entries |
-| **Slot Matrix** | 30 color-coded visual bays (Green = Available, Red = Occupied) |
-| **Check-In Form** | Validated vehicle registration with live slot availability notice |
-| **Active Parking** | Live table of parked vehicles with elapsed timer and 1-click checkout |
-| **Billing & Receipt** | Itemized fee breakdown and official printable digital receipt |
-| **History & Reports** | Searchable audit trail and revenue distribution by vehicle type |
-
----
-
 ## 🎓 Academic Documentation
 For viva preparation and academic project submission, refer to the files in the `docs/` folder:
 - [docs/OOP_CONCEPTS.md](docs/OOP_CONCEPTS.md): Detailed code breakdown of Abstraction, Inheritance, Polymorphism, and Encapsulation.
-- [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md): Formal college submission report with abstract, architecture diagrams, and test tables.
