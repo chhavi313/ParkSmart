@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkSmart — Intelligent Parking & Vehicle Operations Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- REFINED SAAS SIDEBAR -->
+        <aside class="sidebar">
+            <div class="brand-container">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+                        <circle cx="7" cy="17" r="2"></circle>
+                        <circle cx="17" cy="17" r="2"></circle>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h2>ParkSmart</h2>
+                    <span class="brand-tag">Ops Console</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <span class="nav-section-label">Operations</span>
+                <button class="nav-item active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="slots">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7"></path><path d="M3 7l9 6 9-6"></path><path d="M12 13v8"></path></svg>
+                    <span>Parking Slots</span>
+                    <span class="nav-badge" id="nav-free-slots">--</span>
+                </button>
+                <button class="nav-item" data-tab="entry">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                    <span>Vehicle Entry</span>
+                </button>
+                <button class="nav-item" data-tab="active">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Active Parking</span>
+                    <span class="nav-badge badge-amber" id="nav-active-count">0</span>
+                </button>
+                <button class="nav-item" data-tab="exit">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Vehicle Exit & Bill</span>
+                </button>
+
+                <span class="nav-section-label" style="margin-top: 8px;">Analytics & Audit</span>
+                <button class="nav-item" data-tab="history">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"></path><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path></svg>
+                    <span>Parking History</span>
+                </button>
+                <button class="nav-item" data-tab="revenue">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    <span>Revenue & Reports</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="server-status-pill">
+                    <span class="status-indicator-dot pulse"></span>
+                    <div class="status-details">
+                        <span class="status-name">Java Core Engine</span>
+                        <span class="status-meta">Port 8080 • Active</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN WRAPPER -->
+        <main class="main-wrapper">
+            <!-- TOP BAR -->
+            <header class="top-bar">
+                <div class="top-left">
+                    <h1 id="page-title">Dashboard Overview</h1>
+                    <span class="page-subtitle">Real-time facility telemetry & slot operations</span>
+                </div>
+                <div class="top-right">
+                    <div class="top-search">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="global-search-input" placeholder="Quick find vehicle plate or ticket...">
+                        <span class="search-shortcut-hint">↵</span>
+                    </div>
+
+                    <div class="live-time-chip" id="live-clock">
+                        Loading telemetry...
+                    </div>
+
+                    <button class="btn btn-secondary btn-icon" id="btn-refresh" title="Sync Telemetry">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    </button>
+
+                    <button class="btn btn-primary" onclick="navigateTo('entry')">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        <span>New Entry</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- TOAST CONTAINER -->
+            <div id="toast-container" class="toast-container"></div>
+
+            <!-- =============================================================
+                 TAB 1: DASHBOARD
+                 ============================================================= -->
+            <section id="tab-dashboard" class="tab-pane active">
+                <!-- REFINED KPI TILES (Hero Capacity + Balanced Metrics) -->
+                <div class="dashboard-kpi-row">
+                    <!-- HERO: AVAILABLE CAPACITY -->
+                    <div class="kpi-card hero-kpi">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Available Capacity</span>
+                            <div class="kpi-icon-wrap">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="stat-available-slots">--</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext" id="stat-available-meta">Ready for allocation</span>
+                            <span class="kpi-pill pill-lime"><span id="stat-total-slots">30</span> Total Bays</span>
+                        </div>
+                    </div>
+
+                    <!-- OCCUPIED SLOTS -->
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Occupied Bays</span>
+                            <div class="kpi-icon-wrap">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="stat-occupied-slots">--</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext" id="stat-occupied-meta">Currently in use</span>
+                            <span class="kpi-pill pill-red" id="occupancy-badge">0% Occupied</span>
+                        </div>
+                    </div>
+
+                    <!-- ACTIVE PARKINGS -->
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Active Parkings</span>
+                            <div class="kpi-icon-wrap">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="stat-active-vehicles">--</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext">Live active vehicles</span>
+                            <span class="kpi-pill pill-amber">Live Sessions</span>
+                        </div>
+                    </div>
+
+                    <!-- TODAY'S REVENUE -->
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Today's Revenue</span>
+                            <div class="kpi-icon-wrap">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="stat-today-revenue">₹0.00</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext" id="stat-completed-meta">0 sessions billed</span>
+                            <span class="kpi-pill pill-green">Settled</span>
+                        </div>
+                    </div>
+
+                    <!-- SYSTEM HEALTH / METRIC -->
+                    <div class="kpi-card">
+                        <div class="kpi-header">
+                            <span class="kpi-label">Facility Grid</span>
+                            <div class="kpi-icon-wrap">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" style="font-size: 1.35rem; color: var(--text-primary);">3 Zones</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext">10S • 15M • 5L Bays</span>
+                            <span class="kpi-pill pill-lime">Optimal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIDDLE ROW: OCCUPANCY VISUALIZER & ALLOCATION MATRIX -->
+                <div class="dashboard-grid-main">
+                    <!-- OCCUPANCY & BAY UTILIZATION -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Real-Time Bay Utilization</h3>
+                                <p class="card-subtitle">Continuous capacity distribution computed by Java ParkingLot service</p>
+                            </div>
+                        </div>
+
+                        <!-- Circular Gauge & High-Level Summary -->
+                        <div class="occupancy-hero-visual">
+                            <div class="occupancy-dial">
+                                <svg class="occupancy-svg" viewBox="0 0 100 100">
+                                    <circle class="dial-bg" cx="50" cy="50" r="40"></circle>
+                                    <circle class="dial-meter" id="occupancy-dial-meter" cx="50" cy="50" r="40"></circle>
+                                </svg>
+                                <div class="dial-center-label">
+                                    <span class="dial-percent" id="dial-percent-val">0%</span>
+                                    <span class="dial-tag">Load</span>
+                                </div>
+                            </div>
+                            <div class="occupancy-summary-info">
+                                <div class="occupancy-headline" id="occupancy-summary-text">Facility Operating Normally</div>
+                                <div class="occupancy-meter-bar-track">
+                                    <div class="occupancy-meter-bar-fill" id="occupancy-bar" style="width: 0%;"></div>
+                                </div>
+                                <div class="occupancy-legend-row">
+                                    <span class="legend-chip">
+                                        <span class="legend-dot dot-lime"></span>
+                                        Available: <strong id="leg-available" style="color: var(--text-primary); margin-left: 2px;">30</strong>
+                                    </span>
+                                    <span class="legend-chip">
+                                        <span class="legend-dot dot-red"></span>
+                                        Occupied: <strong id="leg-occupied" style="color: var(--text-primary); margin-left: 2px;">0</strong>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ZONE PROGRESS LIST (Small, Medium, Large) -->
+                        <div class="zone-distribution-list">
+                            <!-- Small Bays -->
+                            <div class="zone-item">
+                                <div class="zone-item-head">
+                                    <div class="zone-title-wrap">
+                                        <span class="zone-tag">S</span>
+                                        <span class="zone-name">Small Bays (Bikes / Scooters)</span>
+                                    </div>
+                                    <span class="zone-stats-text" id="cat-small-count">0 / 10 Occupied</span>
+                                </div>
+                                <div class="zone-progress-track">
+                                    <div class="zone-progress-fill fill-small" id="cat-small-bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Medium Bays -->
+                            <div class="zone-item">
+                                <div class="zone-item-head">
+                                    <div class="zone-title-wrap">
+                                        <span class="zone-tag">M</span>
+                                        <span class="zone-name">Medium Bays (Sedans / SUVs / Compacts)</span>
+                                    </div>
+                                    <span class="zone-stats-text" id="cat-medium-count">0 / 15 Occupied</span>
+                                </div>
+                                <div class="zone-progress-track">
+                                    <div class="zone-progress-fill fill-medium" id="cat-medium-bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Large Bays -->
+                            <div class="zone-item">
+                                <div class="zone-item-head">
+                                    <div class="zone-title-wrap">
+                                        <span class="zone-tag">L</span>
+                                        <span class="zone-name">Large Bays (Commercial Trucks / Heavy)</span>
+                                    </div>
+                                    <span class="zone-stats-text" id="cat-large-count">0 / 5 Occupied</span>
+                                </div>
+                                <div class="zone-progress-track">
+                                    <div class="zone-progress-fill fill-large" id="cat-large-bar" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RATE CARD & ALLOCATION LOGIC MATRIX -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Allocation & Tariff Matrix</h3>
+                                <p class="card-subtitle">Automated polymorphic smallest-fit-first allocation rules</p>
+                            </div>
+                        </div>
+
+                        <div class="tariff-rule-list">
+                            <!-- Two Wheeler -->
+                            <div class="tariff-rule-row">
+                                <div class="tariff-vehicle-icon">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"></circle><circle cx="5.5" cy="17.5" r="3.5"></circle><circle cx="15" cy="5" r="1"></circle><path d="M12 17.5V14l-3-3 4-3 2 3h2"></path></svg>
+                                </div>
+                                <div class="tariff-info">
+                                    <div class="tariff-title-row">
+                                        <span class="tariff-category-name">Two Wheeler (Bike)</span>
+                                        <span class="tariff-rate-chip">₹20.00 / hr</span>
+                                    </div>
+                                    <p class="tariff-rule-subtext">Priority fit: Small (S) &rarr; Medium (M) &rarr; Large (L)</p>
+                                </div>
+                            </div>
+
+                            <!-- Four Wheeler -->
+                            <div class="tariff-rule-row">
+                                <div class="tariff-vehicle-icon">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
+                                </div>
+                                <div class="tariff-info">
+                                    <div class="tariff-title-row">
+                                        <span class="tariff-category-name">Four Wheeler (Car)</span>
+                                        <span class="tariff-rate-chip">₹40.00 / hr</span>
+                                    </div>
+                                    <p class="tariff-rule-subtext">Priority fit: Medium (M) &rarr; Large (L) (Incompatible with Small)</p>
+                                </div>
+                            </div>
+
+                            <!-- Heavy Vehicle -->
+                            <div class="tariff-rule-row">
+                                <div class="tariff-vehicle-icon">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                </div>
+                                <div class="tariff-info">
+                                    <div class="tariff-title-row">
+                                        <span class="tariff-category-name">Commercial Vehicle (Truck)</span>
+                                        <span class="tariff-rate-chip">₹70.00 / hr</span>
+                                    </div>
+                                    <p class="tariff-rule-subtext">Strict requirement: Large (L) only</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-quick-actions">
+                            <button class="btn btn-primary btn-block" onclick="navigateTo('entry')">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Check-In Vehicle</span>
+                            </button>
+                            <button class="btn btn-secondary btn-block" onclick="navigateTo('exit')">
+                                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                <span>Process Exit</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTTOM ROW: RECENT OPERATIONS FEED -->
+                <div class="activity-card">
+                    <div class="card-header">
+                        <div class="card-header-left">
+                            <h3 class="card-title">Recent Operational Activity</h3>
+                            <p class="card-subtitle">Live audit stream of recent entries and settled checkouts</p>
+                        </div>
+                        <div class="activity-header-controls">
+                            <div class="tab-toggle-group">
+                                <button class="tab-toggle-btn active" id="btn-toggle-entries" onclick="toggleActivityView('entries')">Recent Check-Ins</button>
+                                <button class="tab-toggle-btn" id="btn-toggle-exits" onclick="toggleActivityView('exits')">Recent Departures</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Entries View -->
+                    <div id="activity-entries-panel" class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Registration Plate</th>
+                                    <th>Vehicle Category</th>
+                                    <th>Assigned Bay</th>
+                                    <th>Check-In Timestamp</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-entries-tbody">
+                                <tr><td colspan="6" class="empty-cell">No recent vehicle entries recorded.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Exits View -->
+                    <div id="activity-exits-panel" class="table-container hidden">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>Registration Plate</th>
+                                    <th>Total Duration</th>
+                                    <th>Tariff Fee</th>
+                                    <th>Settlement Time</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recent-exits-tbody">
+                                <tr><td colspan="6" class="empty-cell">No vehicles have exited yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 TAB 2: PARKING SLOTS
+                 ============================================================= -->
+            <section id="tab-slots" class="tab-pane">
+                <div class="card">
+                    <div class="card-header flex-between">
+                        <div class="card-header-left">
+                            <h3 class="card-title">Facility Slot Telemetry & Spatial Grid</h3>
+                            <p class="card-subtitle">Parking Facility Slot Matrix — 30 physical bays across Small, Medium & Large zones</p>
+                        </div>
+
+                        <!-- Slot Filter Bar -->
+                        <div class="slots-filter-bar slot-filter-buttons">
+                            <button class="filter-chip-btn filter-btn active" data-filter="all">All Bays (30)</button>
+                            <button class="filter-chip-btn filter-btn" data-filter="available">Available (<span id="btn-count-avail">--</span>)</button>
+                            <button class="filter-chip-btn filter-btn" data-filter="occupied">Occupied (<span id="btn-count-occ">--</span>)</button>
+                            <button class="filter-chip-btn filter-btn" data-filter="SMALL">Small (10)</button>
+                            <button class="filter-chip-btn filter-btn" data-filter="MEDIUM">Medium (15)</button>
+                            <button class="filter-chip-btn filter-btn" data-filter="LARGE">Large (5)</button>
+                        </div>
+                    </div>
+
+                    <!-- Architectural Grid -->
+                    <div class="slots-architecture-grid" id="slots-container">
+                        <!-- Dynamically populated by app.js -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 TAB 3: VEHICLE ENTRY
+                 ============================================================= -->
+            <section id="tab-entry" class="tab-pane">
+                <div class="entry-layout-grid">
+                    <!-- Form Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Vehicle Check-In & Automated Allocation</h3>
+                                <p class="card-subtitle">System evaluates bay dimensions and assigns the smallest suitable spot</p>
+                            </div>
+                        </div>
+
+                        <form id="vehicle-entry-form" onsubmit="handleVehicleEntry(event)">
+                            <!-- License Plate Input -->
+                            <div class="form-group">
+                                <label class="form-label" for="entry-reg-no">Registration Number / License Plate *</label>
+                                <div class="input-field-wrap">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="8" x2="17" y2="8"></line><line x1="7" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="12" y2="16"></line></svg>
+                                    <input type="text" id="entry-reg-no" required placeholder="e.g. DL 01 AB 1234" autocomplete="off" style="text-transform: uppercase;">
+                                </div>
+                            </div>
+
+                            <!-- Driver/Owner Name -->
+                            <div class="form-group">
+                                <label class="form-label" for="entry-owner-name">Owner / Driver Name *</label>
+                                <div class="input-field-wrap">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <input type="text" id="entry-owner-name" required placeholder="Full Name">
+                                </div>
+                            </div>
+
+                            <!-- Modern Category Selection Cards -->
+                            <div class="form-group">
+                                <label class="form-label">Select Vehicle Category *</label>
+                                <div class="category-cards-grid">
+                                    <div class="category-radio-card" data-val="BIKE" onclick="selectVehicleCategoryCard('BIKE')">
+                                        <div class="cat-card-icon">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18.5" cy="17.5" r="3.5"></circle><circle cx="5.5" cy="17.5" r="3.5"></circle><circle cx="15" cy="5" r="1"></circle><path d="M12 17.5V14l-3-3 4-3 2 3h2"></path></svg>
+                                        </div>
+                                        <span class="cat-card-title">Two Wheeler</span>
+                                        <span class="cat-card-rate">₹20 / hr</span>
+                                    </div>
+
+                                    <div class="category-radio-card active" data-val="CAR" onclick="selectVehicleCategoryCard('CAR')">
+                                        <div class="cat-card-icon">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
+                                        </div>
+                                        <span class="cat-card-title">Four Wheeler</span>
+                                        <span class="cat-card-rate">₹40 / hr</span>
+                                    </div>
+
+                                    <div class="category-radio-card" data-val="TRUCK" onclick="selectVehicleCategoryCard('TRUCK')">
+                                        <div class="cat-card-icon">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="1"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                        </div>
+                                        <span class="cat-card-title">Commercial</span>
+                                        <span class="cat-card-rate">₹70 / hr</span>
+                                    </div>
+                                </div>
+
+                                <!-- Native select kept in DOM for complete backward-compatibility with backend handler -->
+                                <select id="entry-vehicle-type" class="hidden-native-select" onchange="updateEntryAvailabilityNotice()">
+                                    <option value="CAR">Car</option>
+                                    <option value="BIKE">Bike</option>
+                                    <option value="TRUCK">Truck</option>
+                                </select>
+                            </div>
+
+                            <!-- Contact Number -->
+                            <div class="form-group">
+                                <label class="form-label" for="entry-contact-no">Contact Phone (Optional)</label>
+                                <div class="input-field-wrap">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    <input type="tel" id="entry-contact-no" placeholder="e.g. +91 98765 43210">
+                                </div>
+                            </div>
+
+                            <!-- Live Slot Capacity Banner -->
+                            <div class="slot-availability-callout" id="entry-slot-notice">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                <span id="entry-slot-notice-text">Evaluating real-time bay capacity...</span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-entry">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span>Allocate Bay & Generate Entry Pass</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Newly Issued Ticket Preview -->
+                    <div class="card" id="latest-ticket-card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Live Check-In Pass</h3>
+                                <p class="card-subtitle">Digital ticket record generated upon successful bay reservation</p>
+                            </div>
+                        </div>
+
+                        <div id="latest-ticket-content">
+                            <div class="empty-cell" style="padding: 60px 20px;">
+                                <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--border-hover)" stroke-width="1.5" style="margin-bottom: 12px;"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="7" y1="8" x2="17" y2="8"></line><line x1="7" y1="12" x2="17" y2="12"></line></svg>
+                                <p>Submit a vehicle check-in on the left to preview and print the official parking pass.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 TAB 4: ACTIVE PARKING
+                 ============================================================= -->
+            <section id="tab-active" class="tab-pane">
+                <div class="card">
+                    <div class="card-header flex-between">
+                        <div class="card-header-left">
+                            <h3 class="card-title">Active Parked Vehicles</h3>
+                            <p class="card-subtitle">Real-time inventory of all vehicles currently occupying parking spaces</p>
+                        </div>
+                        <div class="top-search" style="width: 260px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <input type="text" id="active-search-input" placeholder="Filter by plate, owner or bay...">
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket Ref</th>
+                                    <th>License Plate</th>
+                                    <th>Category</th>
+                                    <th>Driver / Owner</th>
+                                    <th>Assigned Bay</th>
+                                    <th>Check-In Time</th>
+                                    <th>Elapsed Duration</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="active-parking-tbody">
+                                <tr><td colspan="8" class="empty-cell">No active parking sessions found. All slots are vacant.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 TAB 5: VEHICLE EXIT & BILLING
+                 ============================================================= -->
+            <section id="tab-exit" class="tab-pane">
+                <div class="exit-layout-grid">
+                    <!-- Exit Processing Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Vehicle Departure & Tariff Settlement</h3>
+                                <p class="card-subtitle">Locate active session to compute exact duration and final billing</p>
+                            </div>
+                        </div>
+
+                        <!-- Search Lookup -->
+                        <div class="lookup-box">
+                            <div class="input-field-wrap" style="flex: 1;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="exit-search-input" placeholder="Enter Registration Plate or Ticket ID (e.g. DL-01 or TKT-1001)" style="text-transform: uppercase;">
+                            </div>
+                            <button class="btn btn-primary" onclick="lookupVehicleForExit()">
+                                <span>Lookup Session</span>
+                            </button>
+                        </div>
+
+                        <!-- Billing Preview -->
+                        <div id="exit-billing-preview" class="billing-calc-card hidden">
+                            <h4 style="font-size: 0.88rem; font-weight: 700; color: var(--accent-lime); margin-bottom: 12px;">Tariff Computation Summary</h4>
+                            
+                            <div class="billing-itemized-list">
+                                <div class="billing-line">
+                                    <span>Ticket Identifier:</span>
+                                    <strong class="ticket-badge" id="preview-ticket-id">--</strong>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Vehicle Registration:</span>
+                                    <strong class="plate-badge" id="preview-reg-no">--</strong>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Vehicle Category & Rate:</span>
+                                    <strong id="preview-type">--</strong>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Assigned Bay:</span>
+                                    <strong class="slot-pill" id="preview-slot">--</strong>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Check-In Time:</span>
+                                    <span id="preview-entry-time">--</span>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Check-Out Time:</span>
+                                    <span id="preview-now-time">--</span>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Duration Billed:</span>
+                                    <strong id="preview-duration">--</strong>
+                                </div>
+                                <div class="billing-line">
+                                    <span>Base Hourly Tariff:</span>
+                                    <strong id="preview-rate">--</strong>
+                                </div>
+                            </div>
+
+                            <div class="billing-total-row">
+                                <span class="billing-total-label">Total Payable Amount</span>
+                                <span class="billing-total-amount" id="preview-total-fee">₹0.00</span>
+                            </div>
+
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-success btn-lg" style="flex: 1;" id="btn-confirm-exit" onclick="confirmVehicleExit()">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>Confirm Settlement & Release Bay</span>
+                                </button>
+                                <button class="btn btn-secondary" onclick="cancelExitPreview()">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Digital Tax Receipt Preview -->
+                    <div class="card">
+                        <div class="card-header flex-between">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Digital Invoice & Receipt</h3>
+                                <p class="card-subtitle">Official printable receipt with tax reference and audit timestamps</p>
+                            </div>
+                            <button class="btn btn-secondary btn-sm" id="btn-print-receipt" onclick="printReceipt()" disabled>
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                <span>Print Receipt</span>
+                            </button>
+                        </div>
+
+                        <div id="receipt-printable-area">
+                            <div class="empty-cell" style="padding: 60px 20px;">
+                                <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--border-hover)" stroke-width="1.5" style="margin-bottom: 12px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                <p>Process a vehicle departure to generate and preview the official receipt.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 TAB 6: PARKING HISTORY
+                 ============================================================= -->
+            <section id="tab-history" class="tab-pane">
+                <div class="card">
+                    <div class="card-header flex-between">
+                        <div class="card-header-left">
+                            <h3 class="card-title">Historical Records & Audit Log</h3>
+                            <p class="card-subtitle">Permanent audit trail of all completed and active parking sessions</p>
+                        </div>
+
+                        <div style="display: flex; gap: 8px;">
+                            <div class="top-search" style="width: 220px;">
+                                <input type="text" id="history-search-input" placeholder="Search plate, owner, bay...">
+                            </div>
+                            <select id="history-type-filter" class="btn btn-secondary btn-sm" onchange="filterHistoryTable()">
+                                <option value="ALL">All Categories</option>
+                                <option value="BIKE">Two-Wheelers (Bikes)</option>
+                                <option value="CAR">Four-Wheelers (Cars)</option>
+                                <option value="TRUCK">Heavy (Trucks)</option>
+                            </select>
+                            <select id="history-status-filter" class="btn btn-secondary btn-sm" onchange="filterHistoryTable()">
+                                <option value="ALL">All Status</option>
+                                <option value="ACTIVE">Active Only</option>
+                                <option value="COMPLETED">Completed Only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Ticket ID</th>
+                                    <th>License Plate</th>
+                                    <th>Category</th>
+                                    <th>Bay</th>
+                                    <th>Driver / Owner</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                    <th>Duration</th>
+                                    <th>Billed Fee</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-tbody">
+                                <tr><td colspan="10" class="empty-cell">No history records available.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =============================================================
+                 TAB 7: REVENUE & REPORTS
+                 ============================================================= -->
+            <section id="tab-revenue" class="tab-pane">
+                <!-- Financial KPI Row -->
+                <div class="revenue-kpi-grid">
+                    <div class="kpi-card hero-kpi">
+                        <span class="kpi-label">Today's Total Collection</span>
+                        <div class="kpi-value" id="rev-stat-today">₹0.00</div>
+                        <span class="kpi-subtext">Settled departures today</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">All-Time Cumulative Revenue</span>
+                        <div class="kpi-value" id="rev-stat-total" style="color: var(--accent-lime-text);">₹0.00</div>
+                        <span class="kpi-subtext">Lifetime gross collected</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Completed Sessions</span>
+                        <div class="kpi-value" id="rev-stat-sessions">0</div>
+                        <span class="kpi-subtext">Billed vehicle checkouts</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Average Ticket Tariff</span>
+                        <div class="kpi-value" id="rev-stat-avg">₹0.00</div>
+                        <span class="kpi-subtext">Mean revenue per vehicle</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid-main">
+                    <!-- Category Breakdown -->
+                    <div class="card revenue-chart-card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Revenue Distribution by Category</h3>
+                                <p class="card-subtitle">Collection telemetry across vehicle size classes</p>
+                            </div>
+                        </div>
+
+                        <!-- Bike -->
+                        <div class="cat-rev-row">
+                            <div class="cat-rev-info">
+                                <span class="cat-rev-name">Two-Wheeler (Bike • ₹20/hr)</span>
+                                <span class="cat-rev-amount" id="rev-bike-val">₹0.00</span>
+                            </div>
+                            <div class="cat-rev-track">
+                                <div class="cat-rev-bar bar-bike" id="rev-bike-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Car -->
+                        <div class="cat-rev-row">
+                            <div class="cat-rev-info">
+                                <span class="cat-rev-name">Four-Wheeler (Car • ₹40/hr)</span>
+                                <span class="cat-rev-amount" id="rev-car-val">₹0.00</span>
+                            </div>
+                            <div class="cat-rev-track">
+                                <div class="cat-rev-bar bar-car" id="rev-car-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Truck -->
+                        <div class="cat-rev-row">
+                            <div class="cat-rev-info">
+                                <span class="cat-rev-name">Commercial Vehicle (Truck • ₹70/hr)</span>
+                                <span class="cat-rev-amount" id="rev-truck-val">₹0.00</span>
+                            </div>
+                            <div class="cat-rev-track">
+                                <div class="cat-rev-bar bar-truck" id="rev-truck-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tariff Algorithm Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <h3 class="card-title">Billing Algorithm Specification</h3>
+                                <p class="card-subtitle">Enforced directly by Java <code>ParkingFeeCalculator</code> service</p>
+                            </div>
+                        </div>
+
+                        <div class="formula-container">
+                            <code>
+                                durationMinutes = differenceInMinutes(entryTime, exitTime);<br>
+                                billedHours     = Math.max(1, Math.ceil(durationMinutes / 60.0));<br>
+                                totalParkingFee = billedHours * vehicleHourlyRate;
+                            </code>
+                        </div>
+
+                        <div style="margin-top: 14px; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6;">
+                            <p style="margin-bottom: 6px;">• <strong>Minimum Base Unit:</strong> Minimum 1-hour charge applies to any session.</p>
+                            <p style="margin-bottom: 6px;">• <strong>Ceiling Rule:</strong> Any partial hour (e.g. 61 mins) rounds UP to 2 hours.</p>
+                            <p>• <strong>Category Tariffs:</strong> Bike: ₹20/hr • Car: ₹40/hr • Truck: ₹70/hr.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- QUICK EXIT CONFIRMATION MODAL -->
+    <div id="quick-exit-modal" class="modal-backdrop hidden">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3>Confirm Vehicle Departure</h3>
+                <button class="modal-close-btn" onclick="closeQuickExitModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: var(--text-secondary);">Confirm checkout and compute tariff settlement for:</p>
+                
+                <div class="modal-vehicle-banner">
+                    <span id="modal-exit-reg" class="plate-badge" style="font-size: 1rem;">--</span>
+                    <span id="modal-exit-slot" class="slot-pill">--</span>
+                </div>
+
+                <div class="billing-itemized-list" style="margin-bottom: 0;">
+                    <div class="billing-line">
+                        <span>Check-In Timestamp:</span>
+                        <span id="modal-exit-entry">--</span>
+                    </div>
+                    <div class="billing-line">
+                        <span>Elapsed Time:</span>
+                        <strong id="modal-exit-duration">--</strong>
+                    </div>
+                    <div class="billing-line">
+                        <span>Hourly Tariff:</span>
+                        <span id="modal-exit-rate">--</span>
+                    </div>
+                    <div class="billing-line" style="border-top: 1px dashed var(--border-card); padding-top: 8px; margin-top: 4px;">
+                        <span style="font-weight: 700; color: var(--text-primary);">Total Due:</span>
+                        <strong id="modal-exit-fee" style="color: var(--accent-lime-text); font-size: 1.15rem; font-family: var(--font-mono);">₹0.00</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeQuickExitModal()">Cancel</button>
+                <button class="btn btn-danger" id="modal-btn-confirm-exit">Confirm & Settle</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
